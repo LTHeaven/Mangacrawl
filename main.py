@@ -43,6 +43,7 @@ def download_image(url, file_name, images):
     images.append(file_name)
 
 def chapterCrawl(name, url, images, toc):
+    home = "mangahome" in url    
     print("Downloading '" + name + "'...")
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
     last_page = findLastPage(soup.findAll("option"))
@@ -51,6 +52,7 @@ def chapterCrawl(name, url, images, toc):
     currentPages = currentPages + last_page
     bar = progressbar.ProgressBar(max_value=last_page, redirect_stdout=True)
     current_url = url
+    print("" + current_url)
     while True:
         current_soup = BeautifulSoup(requests.get(current_url).text, "html.parser")
         try:
@@ -64,7 +66,8 @@ def chapterCrawl(name, url, images, toc):
                 break
         except Exception as ex:
             print("error with currentPage")
-        current_url = "https:" + current_soup.find("img", {"id" : "image"}).parent.get("href")
+        current_url = siteinterface.getNextUrl(soup, home)
+        print("New Url: " + current_url)
 
 def download_manga(url, arg2):
     home = "mangahome" in url

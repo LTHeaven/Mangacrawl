@@ -23,7 +23,15 @@ def getCoverImageUrl(soup, home):
         return soup.find("img", {"class" : "detail-cover"}).get("src")    
     else:
         return soup.find("img", {"class" : "img"}).get("src")
+
+def getNextUrl(soup, home):
+    if home:
+        return "https:" + soup.find("img", {"id" : "image"}).parent.get("href")
+    else:
+        return "https:" + soup.find("a", {"class" : "next_page"}).get("href")
+
         
+      
         
         
         
